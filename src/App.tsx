@@ -1,30 +1,28 @@
 import React, {FC, useEffect, useState} from 'react';
 import {Button} from 'antd';
-import {useSelector} from 'react-redux';
-import {changeCreateMode,} from 'src/store/notesSlice';
 import {ModalNote} from "src/components/modal/ModalNote";
 import {NoteList} from "src/components/ui/notes/noteList/noteList";
-import {RootState, useAppDispatch} from "src/store/store";
 import {PlusOutlined} from "@ant-design/icons";
 import {Note} from "src/types/interface";
 import {SearchModule} from "src/components/search/searchModule";
-import {fetchNote} from "src/store/NoteActions";
+import {useActions} from "src/store/hooks/useActions";
+import {useTypedSelector} from "src/hooks/useTypedSelector";
 
 
 export const App: FC = React.memo(() => {
 
     const [noteData, setNoteData] = useState<Note>();
-    const dispatch = useAppDispatch();
+    const {fetchNote,changeCreateMode} = useActions();
 
-    const editMode = useSelector((state: RootState) => state.notes.editMode);
-    const createMode = useSelector((state: RootState) => state.notes.createMode);
+    const editMode = useTypedSelector((state) => state.notes.editMode);
+    const createMode = useTypedSelector((state) => state.notes.createMode);
 
     useEffect(() => {
-        dispatch(fetchNote());
+        fetchNote();
     }, []);
 
     const handleModalBtn = () => {
-        dispatch(changeCreateMode(true))
+        changeCreateMode(true)
     }
     const handleSelectNote = (note: Note) => {
         setNoteData(note)

@@ -5,7 +5,7 @@ import {
     deleteNote,
     fetchNote,
     updateNote
-} from "src/store/NoteActions";
+} from "src/store/noteActions";
 
 const initialState: NotesState = {
     notes: [],
@@ -77,12 +77,5 @@ export const notesSlice = createSlice({
 
     }
 });
-export const {
-    filterNotesByTag,
-    filterByTitle,
-    filterNotesByTags,
-    changeEditMode,
-    changeCreateMode
-} = notesSlice.actions;
+export const {actions, reducer} = notesSlice
 
-export default notesSlice.reducer;

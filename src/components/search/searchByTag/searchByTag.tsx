@@ -1,14 +1,13 @@
 import React, {FC, useEffect, useState} from 'react';
-import {filterNotesByTag} from "src/store/notesSlice";
 import {Input} from "antd";
-import {useAppDispatch} from "src/store/store";
+import {useActions} from "src/store/hooks/useActions";
 
-export const SearchByTag:FC = () => {
+export const SearchByTag: FC = () => {
     const [searchValue, setSearchValue] = useState('');
-    const dispatch = useAppDispatch();
+    const {filterNotesByTag} = useActions();
     useEffect(() => {
-        dispatch(filterNotesByTag(searchValue));
-    }, [dispatch, searchValue])
+        filterNotesByTag(searchValue);
+    }, [searchValue])
     const {Search} = Input;
     return (
         <Search

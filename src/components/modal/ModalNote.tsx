@@ -2,19 +2,18 @@ import React, {FC, memo} from 'react';
 import {Modal} from 'antd';
 import {Note} from "src/types/interface";
 import {FormItemCommon} from "src/components/form/formNoteCommon";
-import {changeCreateMode, changeEditMode} from "src/store/notesSlice";
-import {useAppDispatch} from "src/store/store";
+import {useActions} from "src/store/hooks/useActions";
 
 interface ModalPropsType {
     note?: Note,
 }
 
 export const ModalNote: FC<ModalPropsType> = memo(({note,}) => {
-    const dispatch = useAppDispatch()
+    const {changeCreateMode,changeEditMode} = useActions()
 
     const handleCloseModal = () => {
-        dispatch(changeCreateMode(false))
-        dispatch(changeEditMode(false))
+        changeCreateMode(false)
+        changeEditMode(false)
     }
 
     return (

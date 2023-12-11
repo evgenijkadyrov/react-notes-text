@@ -1,11 +1,10 @@
 import {useEffect, useState} from "react";
 import {SelectProps} from "antd";
-import {useSelector} from "react-redux";
-import {RootState} from "src/store/store";
+import {useTypedSelector} from "src/hooks/useTypedSelector";
 
 export const useSearchTagsOptions=()=>{
     const [options, setOptions] = useState<SelectProps['options']>([])
-    const notes = useSelector((state: RootState) => state.notes.notes);
+    const notes = useTypedSelector((state) => state.notes.notes);
 
     const compare = () => {
         let options = [];

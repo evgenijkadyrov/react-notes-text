@@ -1,18 +1,17 @@
 import React, {FC, memo, useEffect, useState} from 'react';
 import {Select} from 'antd';
-import {useAppDispatch} from "src/store/store";
-import {filterNotesByTags} from "src/store/notesSlice";
 import {useSearchTagsOptions} from "src/hooks/useSearchTagsOptions";
+import {useActions} from "src/store/hooks/useActions";
 
 export const SearchByTags: FC = memo(() => {
     const [searchTags, setSearchTags] = useState<string[]>([])
 
-    const dispatch = useAppDispatch()
+    const {filterNotesByTags} = useActions()
     const options = useSearchTagsOptions()
 
     useEffect(() => {
-        dispatch(filterNotesByTags(searchTags));
-    }, [dispatch, searchTags])
+        filterNotesByTags(searchTags);
+    }, [searchTags])
 
     return (
         <Select

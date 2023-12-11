@@ -1,32 +1,35 @@
-import React, {FC, useCallback} from 'react';
+import React, {FC} from 'react';
 import {Card, Popconfirm} from "antd";
-import {changeEditMode} from "src/store/notesSlice";
 import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import {Note} from "src/types/interface";
-import {useAppDispatch} from "src/store/store";
-import {deleteNote} from "src/store/NoteActions";
+import {useActions} from "src/store/hooks/useActions";
 
-interface INoteItem  {
+interface INoteItem {
     note: Note,
     selectNote: (note: Note) => void
 }
+
 export const NoteItem: FC<INoteItem> = React.memo(({note, selectNote}) => {
 
-    const dispatch = useAppDispatch();
+    const {deleteNote,changeEditMode} = useActions();
 
-    const handleDeleteNote = useCallback((id: string) => {
-        dispatch(deleteNote(id));
-    }, [dispatch])
+    const handleDeleteNote = (id: string) => {
+        deleteNote(id);
+    }
 
-    const handleEditClick = useCallback((note: Note) => {
+    const handleEditClick = (note: Note) => {
         selectNote(note)
-        dispatch(changeEditMode(true))
-    },[dispatch])
+        changeEditMode(true)
+    }
 
     return (
 
         <div style={{minWidth: '350px', margin: '10px'}}>
-            <Card title={<div style={{fontWeight:'bold', fontStyle:'italic', fontSize:'18px'}}>{note.title}</div>} bordered={false} >
+            <Card title={<div style={{
+                fontWeight: 'bold',
+                fontStyle: 'italic',
+                fontSize: '18px'
+            }}>{note.title}</div>} bordered={false}>
                 <div style={{
                     display: "flex",
                     justifyContent: 'space-between'
@@ -37,7 +40,7 @@ export const NoteItem: FC<INoteItem> = React.memo(({note, selectNote}) => {
 
                 {note.content ? note.content : "The note doesn't contain any content. "}
             </Card>
-            <Card bordered={false}  actions={[
+            <Card bordered={false} actions={[
                 <EditOutlined onClick={() => handleEditClick(note)}/>,
 
                 <Popconfirm title={'Delete notice'}

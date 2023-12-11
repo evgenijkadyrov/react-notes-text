@@ -18,14 +18,15 @@ export const updateNote = createAsyncThunk(
 );
 
 export const deleteNote = createAsyncThunk(
-    'notes/deleteNoteAsync',
+    'notes/deleteNote',
     async (noteId: string) => {
         await db.notes.delete(noteId);
         return noteId;
     }
 );
 export const addNote = createAsyncThunk(
-    'notes/addNoteAsync',
+
+    'notes/addNote',
     async (newNote: Note) => {
         await db.notes.add(newNote);
         return newNote;

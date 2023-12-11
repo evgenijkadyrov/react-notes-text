@@ -7,11 +7,12 @@ interface IFormButton{
     errors: Partial<FieldErrorsImpl<DeepRequired<IFormInput>>> & {root?: Record<string, GlobalError> & GlobalError}
     note?:Note
     handleCancelBtn:()=>void
+
 }
 export const FormButton:FC<IFormButton>=({errors, note,handleCancelBtn})=>{
     return(
         <div style={{display: 'flex', justifyContent: 'flex-end', margin: '10px 0'}}>
-            <Button type="primary" htmlType="submit" style={{marginRight: '10px'}}
+            <Button type="primary" htmlType="submit"  style={{marginRight: '10px'}}
                     disabled={!!errors.content || !!errors.title}>
                 {note ? 'Save' : 'Create'}
             </Button>

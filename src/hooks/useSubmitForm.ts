@@ -1,16 +1,14 @@
 import {IFormInput, Note} from "src/types/interface";
 import {useCallback, useState} from "react";
-import {useAppDispatch} from "src/store/store";
 import {useForm} from "react-hook-form";
-import {changeCreateMode, changeEditMode} from "src/store/notesSlice";
 import {SubmitHandler} from "react-hook-form/dist/types";
-import {addNote, updateNote} from "src/store/NoteActions";
 import {v4 as uuidv4} from "uuid";
+import {useActions} from "src/store/hooks/useActions";
 
-export const useSubmitForm=(note?:Note)=>{
+export const useSubmitForm = (note?: Note) => {
     const [inputValue, setInputValue] = useState(note?.content || '');
     const [tags, setTags] = useState<string[]>(note?.tags || []);
-    const dispatch = useAppDispatch();
+    const {changeCreateMode, changeEditMode, updateNote, addNote} = useActions();
     const {
         handleSubmit,
         reset,
@@ -26,35 +24,31 @@ export const useSubmitForm=(note?:Note)=>{
         setTags(value);
     }, []);
 
-    const handleCancelBtn = useCallback(() => {
-        dispatch(changeEditMode(false))
-        dispatch(changeCreateMode(false))
+    const handleCancelBtn = () => {
+        changeEditMode(false)
+        changeCreateMode(false)
         reset();
-    }, [dispatch])
+    }
     const onSubmit: SubmitHandler<IFormInput> = ({
                                                      title = note?.title || '',
                                                      content
                                                  }) => {
         if (note) {
-            dispatch(
-                updateNote({
-                    id: note.id,
-                    title,
-                    content: inputValue,
-                    tags,
-                })
-            );
-            dispatch(changeEditMode(false))
+            updateNote({
+                id: note.id,
+                title,
+                content: inputValue,
+                tags,
+            });
+            changeEditMode(false)
         } else {
-            dispatch(
-                addNote({
-                    id: uuidv4(),
-                    title,
-                    content,
-                    tags,
-                })
-            );
-            dispatch(changeCreateMode(false))
+            addNote({
+                id: uuidv4(),
+                title,
+                content,
+                tags,
+            });
+            changeCreateMode(false)
         }
 
         reset();
@@ -66,5 +60,15 @@ export const useSubmitForm=(note?:Note)=>{
         const tagRegex = new RegExp(tags.join("|"), "gi");
         return inputValue.replace(tagRegex, "<span style='color: blue'>$&</span>");
     };
-    return {onSubmit, highlightMatchingTags, handleTagsValue,handleCancelBtn, handleSubmit, control, errors , inputValue, setInputValue}
+    return {
+        onSubmit,
+        highlightMatchingTags,
+        handleTagsValue,
+        handleCancelBtn,
+        handleSubmit,
+        control,
+        errors,
+        inputValue,
+        setInputValue
+    }
 }

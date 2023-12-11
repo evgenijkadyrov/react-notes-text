@@ -1,12 +1,12 @@
 import React, {FC, memo} from 'react';
 import Search from "antd/es/input/Search";
-import {filterByTitle} from "src/store/notesSlice";
-import {useAppDispatch} from "src/store/store";
+import {useActions} from "src/store/hooks/useActions";
 
-export const SearchByTitle: FC =memo(() => {
-    const dispatch = useAppDispatch()
+export const SearchByTitle: FC = memo(() => {
+    const {filterByTitle} = useActions()
+
     const handleFilterTitle = (value: string) => {
-        dispatch(filterByTitle(value))
+        filterByTitle(value)
     }
     return (
         <Search
@@ -15,5 +15,5 @@ export const SearchByTitle: FC =memo(() => {
             style={{width: 200}}
         />
     );
-}) ;
+});
 
